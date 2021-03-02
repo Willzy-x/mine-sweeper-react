@@ -1,11 +1,9 @@
 import React from 'react';
 import Block from './Block';
 
-const numOfMines = 10;
-
 let dx1 = [-1, 0, 1, -1, 1, -1, 0, 1];
 let dy1 = [-1, -1, -1, 0, 0, 1, 1, 1];
-let dx2 = [-1, 1, 0, 0]
+let dx2 = [-1, 1, 0, 0];
 let dy2 = [0, 0, -1, 1];
 
 let generateMinesMap = (rows, cols, numOfMines) => {
@@ -43,7 +41,7 @@ let generateMinesMap = (rows, cols, numOfMines) => {
 
 let depthSearch = (concealedArray, blocks, i, rows, cols) => {
   if (blocks[i] === "x") {
-    concealedArray[i] = false;
+    concealedArray[i] = 0;
     let rIndex = Math.floor(i / cols);
     let cIndex = i % cols;
     for (let j = 0; j < 4; ++j) {
@@ -63,20 +61,39 @@ class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      blocks: generateMinesMap(this.props.rows, this.props.cols, numOfMines),
-      concealedArray: Array(props.cols * props.rows).fill(true)
+      blocks: generateMinesMap(this.props.rows, this.props.cols, this.props.numOfMines),
+      concealedArray: Array(props.cols * props.rows).fill(1),
+      remainingMines: this.props.numOfMines
     };
     console.log(`has ${this.props.rows} rows, ${this.props.cols} columns.`);
     this.handleClickBlock = this.handleClickBlock.bind(this);
+    this.handleCtrlClickBlock = this.handleCtrlClickBlock.bind(this);
   }
 
   handleClickBlock(i) {
     const concealArray = this.state.concealedArray.slice();
-    concealArray[i] = false;
+    concealArray[i] = 0;
     depthSearch(concealArray, this.state.blocks, i, this.props.rows, this.props.cols);
     this.setState({
       concealedArray: concealArray
     });
+    if (this.state.blocks[i] === "💣") {
+      let foundedMines = this.props.numOfMines - this.state.remainingMines;
+      alert(`You lose! Here is a mine! You found ${foundedMines}/${this.props.numOfMines} mines`);
+    }
+  }
+
+  handleCtrlClickBlock(i) {
+    const concealArray = this.state.concealedArray.slice();
+    const newRemainingMines = this.state.remainingMines - 1;
+    concealArray[i] = 2;
+    this.setState({
+      concealedArray: concealArray,
+      remainingMines: newRemainingMines
+    });
+    if (this.state.remainingMines === 0) {
+      alert("You win! You found all of the mines!");
+    }
   }
   
   render() {
@@ -93,6 +110,7 @@ class Board extends React.Component {
                         value={this.state.blocks[blockIndex]}
                         concealed={this.state.concealedArray[blockIndex]}
                         onClickBlock={() => this.handleClickBlock(blockIndex)}
+                        onClickCtrlBlock={() => this.handleCtrlClickBlock(blockIndex)}
                       />
                     );
                   }
