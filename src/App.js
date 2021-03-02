@@ -5,7 +5,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="container">
-        <Board rows={ 3 } cols = { 4 } />
+        <Board rows={ 10 } cols = { 10 } />
       </div>
     );
   }

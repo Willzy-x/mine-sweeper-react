@@ -2,26 +2,17 @@ import React from 'react';
 
 class Block extends React.Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      concealed: true
+  render() {
+    const blockStyle = {
+      "height": "50px",
+      "width": "50px",
+      "padding": "5px",
+      "background-color": this.props.concealed ? "#F8F8FF" : "#DCDCDC"
     };
 
-    this.handleBlockClick = this.handleBlockClick.bind(this);
-  }
-
-
-  handleBlockClick() {
-    this.setState({
-      concealed: false
-    });
-  }
-
-  render() {
     return (
-      <button className="block" onClick={this.handleBlockClick} >
-        { this.state.concealed ? "x" : this.props.value }
+      <button className="block" onClick={ () => this.props.onClickBlock()} style={blockStyle} >
+        { this.props.concealed ? "x" : this.props.value }
       </button>
     );
   }
