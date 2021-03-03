@@ -15,8 +15,8 @@ class Block extends React.Component {
     return (
       <button className="block" onClick={
         (event) => {
-          if (event.nativeEvent.ctrlKey) {
-            this.props.onClickCtrlBlock();
+          if (event.nativeEvent.shiftKey) {
+            this.props.onClickShiftBlock();
           } else {
             this.props.onClickBlock();
           }

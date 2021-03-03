@@ -67,7 +67,7 @@ class Board extends React.Component {
     };
     console.log(`has ${this.props.rows} rows, ${this.props.cols} columns.`);
     this.handleClickBlock = this.handleClickBlock.bind(this);
-    this.handleCtrlClickBlock = this.handleCtrlClickBlock.bind(this);
+    this.handleShiftClickBlock = this.handleShiftClickBlock.bind(this);
   }
 
   handleClickBlock(i) {
@@ -83,9 +83,12 @@ class Board extends React.Component {
     }
   }
 
-  handleCtrlClickBlock(i) {
+  handleShiftClickBlock(i) {
     const concealArray = this.state.concealedArray.slice();
-    const newRemainingMines = this.state.remainingMines - 1;
+    var newRemainingMines = this.state.remainingMines;
+    if (this.state.blocks[i] === "💣") {
+      newRemainingMines--;
+    } 
     concealArray[i] = 2;
     this.setState({
       concealedArray: concealArray,
@@ -110,7 +113,7 @@ class Board extends React.Component {
                         value={this.state.blocks[blockIndex]}
                         concealed={this.state.concealedArray[blockIndex]}
                         onClickBlock={() => this.handleClickBlock(blockIndex)}
-                        onClickCtrlBlock={() => this.handleCtrlClickBlock(blockIndex)}
+                        onClickShiftBlock={() => this.handleShiftClickBlock(blockIndex)}
                       />
                     );
                   }
