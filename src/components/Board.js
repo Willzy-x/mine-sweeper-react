@@ -1,12 +1,12 @@
 import React from 'react';
 import Block from './Block';
 
-let dx1 = [-1, 0, 1, -1, 1, -1, 0, 1];
-let dy1 = [-1, -1, -1, 0, 0, 1, 1, 1];
-let dx2 = [-1, 1, 0, 0];
-let dy2 = [0, 0, -1, 1];
+const dx1 = [-1, 0, 1, -1, 1, -1, 0, 1];
+const dy1 = [-1, -1, -1, 0, 0, 1, 1, 1];
+const dx2 = [-1, 1, 0, 0];
+const dy2 = [0, 0, -1, 1];
 
-let generateMinesMap = (rows, cols, numOfMines) => {
+const generateMinesMap = (rows, cols, numOfMines) => {
   let totalNum = rows * cols;
   numOfMines = numOfMines % totalNum;
   let arr = Array(totalNum).fill(" ");
@@ -39,7 +39,7 @@ let generateMinesMap = (rows, cols, numOfMines) => {
   return arr;
 };
 
-let depthSearch = (concealedArray, blocks, i, rows, cols) => {
+const depthSearch = (concealedArray, blocks, i, rows, cols) => {
   if (blocks[i] === "x") {
     concealedArray[i] = 0;
     let rIndex = Math.floor(i / cols);
@@ -85,7 +85,7 @@ class Board extends React.Component {
 
   handleShiftClickBlock(i) {
     const concealArray = this.state.concealedArray.slice();
-    var newRemainingMines = this.state.remainingMines;
+    let newRemainingMines = this.state.remainingMines;
     if (this.state.blocks[i] === "💣") {
       newRemainingMines--;
     } 
