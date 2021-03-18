@@ -15,7 +15,7 @@ const generateMinesMap = (rows, cols, numOfMines) => {
     while (arr[randomIndex] === "💣") {
       randomIndex = (randomIndex + Math.floor(Math.random() * 10)) % (totalNum);
     }
-    arr[randomIndex] = "💣"
+    arr[randomIndex] = "💣";
   }
   // generate numbers
   for (let i = 0; i < totalNum; ++i) {

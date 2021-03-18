@@ -1,17 +1,16 @@
 import React from 'react';
 import Block from './Block';
 import * as Actions from '../actions/Actions';
-import { boardStore } from '../store';
 class Board extends React.Component {
 
   constructor(props) {
     super(props);
-    boardStore.dispatch(Actions.initializeBoard({
+    this.props.store.dispatch(Actions.initializeBoard({
       rows: this.props.rows,
       cols: this.props.cols,
       numOfMines: this.props.numOfMines
     }));
-    this.state = boardStore.getState();
+    this.state = this.props.store.getState();
     console.log(`has ${this.props.rows} rows, ${this.props.cols} columns.`);
     this.onChange = this.onChange.bind(this);
     this.handleClickBlock = this.handleClickBlock.bind(this);
@@ -19,11 +18,11 @@ class Board extends React.Component {
   }
 
   onChange() {
-    this.setState(boardStore.getState());
+    this.setState(this.props.store.getState());
   }
 
   handleClickBlock(i) {
-    boardStore.dispatch(Actions.discloseBlock({
+    this.props.store.dispatch(Actions.discloseBlock({
       idx: i,
       rows: this.props.rows,
       cols: this.props.cols
@@ -34,18 +33,18 @@ class Board extends React.Component {
   }
 
   handleShiftClickBlock(i) {
-    boardStore.dispatch(Actions.markBlockAsMine({idx: i}));
+    this.props.store.dispatch(Actions.markBlockAsMine({idx: i}));
     if (this.state.remainingMines === 0) {
       alert("Congratulations, you have found all mines!");
     }
   }
 
   componentDidMount() {
-    boardStore.subscribe(this.onChange);
+    this.props.store.subscribe(this.onChange);
   }
 
   componentWillUnmount() {
-    boardStore.unsubscribe(this.onChange);
+    this.props.store.unsubscribe(this.onChange);
   }
   
   render() {
