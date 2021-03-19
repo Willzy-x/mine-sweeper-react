@@ -5,11 +5,6 @@ class Board extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.store.dispatch(Actions.initializeBoard({
-      rows: this.props.rows,
-      cols: this.props.cols,
-      numOfMines: this.props.numOfMines
-    }));
     this.state = this.props.store.getState();
     console.log(`has ${this.props.rows} rows, ${this.props.cols} columns.`);
     this.onChange = this.onChange.bind(this);
@@ -36,6 +31,7 @@ class Board extends React.Component {
     this.props.store.dispatch(Actions.markBlockAsMine({idx: i}));
     if (this.state.remainingMines === 0) {
       alert("Congratulations, you have found all mines!");
+      console.log("win");
     }
   }
 

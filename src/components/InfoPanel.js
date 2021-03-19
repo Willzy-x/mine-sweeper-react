@@ -1,4 +1,5 @@
 import React from 'react';
+import TimerCounter from './TimeCounter';
 
 class InfoPanel extends React.Component {
 
@@ -23,6 +24,7 @@ class InfoPanel extends React.Component {
   render() {
     return (
       <div className="info-panel">
+        <TimerCounter /> 
         <p>{ this.state.remainingMines }</p>
       </div>
     );

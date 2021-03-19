@@ -55,6 +55,7 @@ const depthSearch = (concealedArray, blocks, i, rows, cols) => {
   } 
 };
 
+// conceal state: 0, disclosed; 1, hidden; 2, flagged.
 export const BoardReducer = (state = {}, action) => {
   const { payload } = action;
 
@@ -79,10 +80,13 @@ export const BoardReducer = (state = {}, action) => {
       const { idx } = payload;
       const concealArray = state.concealedArray.slice();
       let newRemainingMines = state.remainingMines;
-      if (state.blocks[idx] === "💣") {
-        newRemainingMines--;
-      } 
-      concealArray[idx] = 2;
+      if (concealArray[idx] === 1) {
+        concealArray[idx] = 2;
+        if (state.blocks[idx] === "💣") newRemainingMines--;
+      } else if (concealArray[idx] === 2) {
+        concealArray[idx] = 1;
+        if (state.blocks[idx] === "💣") newRemainingMines++;
+      }
       return {...state, concealedArray: concealArray, remainingMines: newRemainingMines};
     }
 
