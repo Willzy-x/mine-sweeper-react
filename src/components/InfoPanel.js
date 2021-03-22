@@ -23,9 +23,13 @@ class InfoPanel extends React.Component {
 
   render() {
     return (
-      <div className="info-panel">
-        <TimerCounter /> 
-        <p>{ this.state.remainingMines }</p>
+      <div className="info-panel container-md">
+        <div className="row" >
+          <TimerCounter className="col-sm text-left " /> 
+          <span className="col-sm text-right badge badge-primary" >
+            Number of remaining mines: { this.state.remainingMines }
+          </span>
+        </div>
       </div>
     );
   }

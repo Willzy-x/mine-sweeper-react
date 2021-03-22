@@ -9,17 +9,25 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     store.dispatch(Actions.initializeBoard({
-      rows: 10,
-      cols: 10,
-      numOfMines: 2
+      rows: props.rows,
+      cols: props.cols,
+      numOfMines: props.numOfMines
     }));
   }
 
   render() {
     return (
-      <div className="container">
-        <InfoPanel store={ store }/>
-        <Board rows={ 10 } cols={ 10 } numOfMines={ 10 } store={ store } />
+      <div className="app container">
+        <div className="row">
+          <InfoPanel store={store} />
+        </div>
+        <div className="row">
+          <Board 
+            rows={this.props.rows} 
+            cols={this.props.cols} 
+            numOfMines={this.props.numOfMines} 
+            store={store} />
+        </div>
       </div>
     );
   }
