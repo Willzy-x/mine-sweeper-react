@@ -3,7 +3,7 @@ import React from 'react';
 class Block extends React.Component {
 
   render() {
-    var textTemp = this.props.concealed > 0 ? "x" : this.props.value;
+    var textTemp = this.props.concealed > 0 ? " " : this.props.value;
     let blockValue = this.props.concealed === 2 ? "🚩" : textTemp;
     const blockStyle = {
       "height": "60px",
@@ -13,7 +13,7 @@ class Block extends React.Component {
     };
 
     return (
-      <button className="block" onClick={
+      <button className="btn btn-outline-secondary" onClick={
         (event) => {
           if (event.nativeEvent.shiftKey) {
             this.props.onClickShiftBlock();

@@ -1,20 +1,25 @@
 import React from 'react';
 import Block from './Block';
 import * as Actions from '../actions/Actions';
+import RestartModal from './RestartModal';
 class Board extends React.Component {
 
   constructor(props) {
     super(props);
-    this.props.store.dispatch(Actions.initializeBoard({
-      rows: this.props.rows,
-      cols: this.props.cols,
-      numOfMines: this.props.numOfMines
-    }));
     this.state = this.props.store.getState();
-    console.log(`has ${this.props.rows} rows, ${this.props.cols} columns.`);
     this.onChange = this.onChange.bind(this);
     this.handleClickBlock = this.handleClickBlock.bind(this);
     this.handleShiftClickBlock = this.handleShiftClickBlock.bind(this);
+    this.handleRestart = this.handleRestart.bind(this);
+    this.gameFinish = this.gameFinish.bind(this);
+  }
+
+  gameFinish(win) {
+    if (win) {
+      alert("Congratulations, you have found all mines!");
+    } else {
+      alert("Oops, here is a mine!");
+    }
   }
 
   onChange() {
@@ -28,15 +33,20 @@ class Board extends React.Component {
       cols: this.props.cols
     }));
     if (this.state.blocks[i] === "💣") {
-      alert("Oops, here is a mine!");
+      this.gameFinish(false);
     }
   }
 
   handleShiftClickBlock(i) {
     this.props.store.dispatch(Actions.markBlockAsMine({idx: i}));
-    if (this.state.remainingMines === 0) {
-      alert("Congratulations, you have found all mines!");
-    }
+  }
+
+  handleRestart() {
+    this.props.store.dispatch(Actions.initializeBoard({
+      rows: this.props.rows,
+      cols: this.props.cols,
+      numOfMines: this.props.numOfMines
+    }));
   }
 
   componentDidMount() {
@@ -46,10 +56,16 @@ class Board extends React.Component {
   componentWillUnmount() {
     this.props.store.unsubscribe(this.onChange);
   }
+
+  componentDidUpdate() {
+    if (this.state.remainingMines === 0) {
+      this.gameFinish(true);
+    }
+  }
   
   render() {
     return (
-      <div className="Board">
+      <div className="board">
         { 
           [...Array(this.props.rows).keys()].map(rIndex => 
             <div key={rIndex} className="board-row">
@@ -70,6 +86,7 @@ class Board extends React.Component {
             </div>
           ) 
         }
+        <RestartModal show={this.state.finished} handleRestart={this.handleRestart}/>
       </div>
     );
   }
